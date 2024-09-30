@@ -6,6 +6,7 @@ namespace APItask.Data
     public interface IProductRepository
     {
         Task<Product> GetProductAsync(int productId);
+        Task<Product> GetUpcAsync(string upc);
         Task<Product> UpdateProductAsync(Product product);
         Task<List<Product>> CreateProductsAsync(List<Product> products);
         Task<bool> DeleteProductByIdAsync(int productId);

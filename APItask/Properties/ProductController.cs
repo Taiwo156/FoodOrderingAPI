@@ -1,4 +1,5 @@
 ﻿using APItask.Service;
+using ASPtask.Core;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -21,6 +22,30 @@ namespace APItask.Properties
         public List<Product> Get()
         {
             return productService.GetProducts();
+        }
+
+        // GET: api/product/{productId}
+        [HttpGet("{productId}")]
+        public async Task<ActionResult<Product>> GetProductAsync(int productId)
+        {
+            var product = await productService.GetProductAsync(productId);
+            if (product == null)
+            {
+                return NotFound("Product not found.");
+            }
+            return Ok(product);
+        }
+
+        // GET: api/product/{productId}
+        [HttpGet("upc")]
+        public async Task<ActionResult<Product>> GetUpcAsync(string upc)
+        {
+            var product = await productService.GetUpcAsync(upc);
+            if (product == null)
+            {
+                return NotFound("Product not found.");
+            }
+            return Ok(product);
         }
 
         // POST api/<ProductController>

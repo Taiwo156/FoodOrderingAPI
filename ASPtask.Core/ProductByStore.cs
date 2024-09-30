@@ -11,12 +11,10 @@ namespace ASPtask.Core
 {
     public class ProductByStore
     {
+        [Key]
         public int ProductId { get; set; }
-        public Product Product { get; set; }  // Reference to Product table
-
+        [Key]
         public int StoreId { get; set; }
-        public Store Store { get; set; }      // Reference to Store table
-
         public int QuantityAvailable { get; set; }
         public int QuantityCommitted { get; set; }
     }

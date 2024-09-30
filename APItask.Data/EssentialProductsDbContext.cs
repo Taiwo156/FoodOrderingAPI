@@ -33,23 +33,14 @@ namespace APItask.Data
             }
         }
 
+ 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Defining composite key for ProductByStore
             modelBuilder.Entity<ProductByStore>()
-                .HasKey(p => new { p.ProductId, p.StoreId });
+                .HasKey(p => new { p.ProductId, p.StoreId, });
 
-            // Define foreign key relationship with Product
-            modelBuilder.Entity<ProductByStore>()
-                .HasOne(pbs => pbs.Product)
-                .WithMany()
-                .HasForeignKey(pbs => pbs.ProductId);
-
-            // Define foreign key relationship with Store
-            modelBuilder.Entity<ProductByStore>()
-                .HasOne(pbs => pbs.Store)
-                .WithMany()
-                .HasForeignKey(pbs => pbs.StoreId);
+           
 
             // Existing mappings
             modelBuilder.Entity<Favorite>().ToTable("Favorite");

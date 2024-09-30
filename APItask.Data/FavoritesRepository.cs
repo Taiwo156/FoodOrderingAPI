@@ -16,7 +16,7 @@ namespace APItask.Service
             _context = context;
         }
 
-        public async Task<IEnumerable<Favorite>> GetUserFavoritesAsync(string userId)
+        public async Task<IEnumerable<Favorite>> GetUserFavoritesAsync(int userId)
         {
             return await _context.Favorites.Where(f => f.UserId == userId).ToListAsync();
         }
@@ -30,9 +30,14 @@ namespace APItask.Service
         {
             _context.Favorites.Add(favorite);
             await _context.SaveChangesAsync();
-            return favorite;
+            return favorite ;
         }
-
+        //public async Task<List<Product>> CreateProductsAsync(List<Product> products)
+        //{
+        //    await _context.Product.AddRangeAsync(products);
+        //    await _context.SaveChangesAsync();
+        //    return products;
+        //}
         public async Task<bool> RemoveFavoriteAsync(int favoriteId)
         {
             var favorite = await _context.Favorites.FindAsync(favoriteId);
@@ -43,7 +48,7 @@ namespace APItask.Service
             return true;
         }
 
-        public async Task<bool> IsProductInFavoritesAsync(int productId, string userId)
+        public async Task<bool> IsProductInFavoritesAsync(int productId, int userId)
         {
             return await _context.Favorites.AnyAsync(f => f.ProductId == productId && f.UserId == userId);
         }
