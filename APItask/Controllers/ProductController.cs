@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace APItask.Properties
+namespace APItask.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -17,14 +17,23 @@ namespace APItask.Properties
             this.productService = productService;
         }
 
-        // GET: api/<ProductController>
+        /// <summary>
+        /// // GET: api/<ProductController>
+        /// </summary>
+        /// <returns></returns>
+        
         [HttpGet]
         public List<Product> Get()
         {
             return productService.GetProducts();
         }
 
-        // GET: api/product/{productId}
+        /// <summary>
+        /// // GET: api/product/{productId}
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
+
         [HttpGet("{productId}")]
         public async Task<ActionResult<Product>> GetProductAsync(int productId)
         {
@@ -36,7 +45,11 @@ namespace APItask.Properties
             return Ok(product);
         }
 
-        // GET: api/product/{productId}
+        /// <summary>
+        /// // GET: api/product/{productId}
+        /// </summary>
+        /// <param name="upc"></param>
+        /// <returns></returns>
         [HttpGet("upc")]
         public async Task<ActionResult<Product>> GetUpcAsync(string upc)
         {
@@ -48,7 +61,11 @@ namespace APItask.Properties
             return Ok(product);
         }
 
-        // POST api/<ProductController>
+        /// <summary>
+        /// // POST api/<ProductController>
+        /// </summary>
+        /// <param name="products"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Post(List<Product> products)
         {
@@ -56,7 +73,12 @@ namespace APItask.Properties
             return Ok(new { message = "Products created successfully." });
         }
 
-        // PUT api/<ProductController>/5
+        /// <summary>
+        /// // PUT api/<ProductController>/5
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="product"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] Product product)
         {
@@ -87,7 +109,11 @@ namespace APItask.Properties
             return Ok(new { message = "Product updated successfully." });
         }
 
-        // DELETE api/<ProductController>/5
+        /// <summary>
+        /// // DELETE api/<ProductController>/5
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

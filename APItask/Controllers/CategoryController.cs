@@ -4,8 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
-namespace APItask.Properties
+namespace APItask.Controllers
 {
+    /// <summary>
+    /// Category API
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class CategoryController : ControllerBase
@@ -19,7 +22,11 @@ namespace APItask.Properties
             _logger = logger;
         }
 
-        // GET: api/<CategoryController>
+        /// <summary>
+        /// // GET: api/<CategoryController>
+        /// </summary>
+        /// <returns></returns>
+
         [HttpGet]
         public async Task<ActionResult> Get()
         {
@@ -28,7 +35,12 @@ namespace APItask.Properties
             return Ok(categories);
         }
 
-        // GET api/<CategoryController>/5
+        /// <summary>
+        /// // GET api/<CategoryController>/5
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+
         [HttpGet("{id}")]
         public async Task<ActionResult> Get(short id)
         {
@@ -43,7 +55,12 @@ namespace APItask.Properties
             return Ok(category);
         }
 
-        // POST api/<CategoryController>
+        /// <summary>
+        /// // POST api/<CategoryController>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] string value)
         {
@@ -51,11 +68,17 @@ namespace APItask.Properties
             await dbContext.Category.AddAsync(entityToAdd);
             await dbContext.SaveChangesAsync();
             _logger.LogInformation("Created new category with ID {Id}.", entityToAdd.Id);
-           // return new CreatedResult("Get", entityToAdd.Id);
+            // return new CreatedResult("Get", entityToAdd.Id);
             return Ok(new { message = "Category created successfully." });
         }
 
-        // PUT api/<CategoryController>/5
+        /// <summary>
+        /// // PUT api/<CategoryController>/5
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(short id, [FromBody] string value)
         {
@@ -73,7 +96,11 @@ namespace APItask.Properties
             return Ok(new { message = "Category updated successfully." });
         }
 
-        // DELETE api/<CategoryController>/5
+        /// <summary>
+        /// // DELETE api/<CategoryController>/5
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(short id)
         {

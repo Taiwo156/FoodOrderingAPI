@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 
-namespace APItask.Properties
+namespace APItask.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -20,7 +20,10 @@ namespace APItask.Properties
             _userService = userService;
         }
 
-        // GET api/users
+        /// <summary>
+        /// // GET api/users
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult> GetAllUsers()
         {
@@ -31,7 +34,12 @@ namespace APItask.Properties
             return Ok(users);
         }
 
-        // POST api/users/login
+        /// <summary>
+        /// // POST api/users/login
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         [HttpPost("login")]
         public async Task<ActionResult> Login(string username, string password)
         {
@@ -42,7 +50,11 @@ namespace APItask.Properties
             return Ok(user);
         }
 
-        // POST api/users/register
+        /// <summary>
+        /// // POST api/users/register
+        /// </summary>
+        /// <param name="users"></param>
+        /// <returns></returns>
         [HttpPost("register")]
         public async Task<ActionResult> Register([FromBody] List<User> users)
         {
@@ -54,7 +66,11 @@ namespace APItask.Properties
         }
 
 
-        // GET api/users/{id}
+        /// <summary>
+        /// // GET api/users/{id}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult> GetUser(int id)
         {
@@ -77,6 +93,12 @@ namespace APItask.Properties
             //return _userService.GetUserByIdAsync(id);
         }
 
+        /// <summary>
+        /// // PUT: api/user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(int id, [FromBody] User user)
         {
@@ -100,7 +122,11 @@ namespace APItask.Properties
             return Ok("User updated successfully.");
         }
 
-        // DELETE api/users/{id}
+        /// <summary>
+        /// // DELETE api/users/{id}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(int id)
         {

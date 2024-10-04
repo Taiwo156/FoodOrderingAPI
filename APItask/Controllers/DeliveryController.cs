@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace APItask.Properties
+namespace APItask.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -17,7 +17,11 @@ namespace APItask.Properties
             _deliveryService = deliveryService;
         }
 
-        // GET: api/delivery/{id}
+        /// <summary>
+        /// // GET: api/delivery/{id}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetDeliveryById(int id)
         {
@@ -29,7 +33,11 @@ namespace APItask.Properties
             return Ok(delivery);
         }
 
-        // GET: api/delivery/order/{orderId}
+        /// <summary>
+        /// // GET: api/delivery/order/{orderId}
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
         [HttpGet("order/{orderId}")]
         public async Task<IActionResult> GetDeliveryByOrderId(int orderId)
         {
@@ -41,7 +49,11 @@ namespace APItask.Properties
             return Ok(delivery);
         }
 
-        // POST: api/delivery
+        /// <summary>
+        /// // POST: api/delivery
+        /// </summary>
+        /// <param name="delivery"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> CreateDelivery([FromBody] Delivery delivery)
         {
@@ -49,7 +61,12 @@ namespace APItask.Properties
             return Ok(new { message = "Delivery registered successfully." });
         }
 
-        // PUT: api/delivery/{id}
+        /// <summary>
+        /// // PUT: api/delivery/{id}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateDeliveryStatus(int id, [FromBody] string status)
         {
@@ -61,7 +78,11 @@ namespace APItask.Properties
             return Ok(new { message = "Delivery status updated successfully." });
         }
 
-        // DELETE: api/delivery/{id}
+        /// <summary>
+        /// // DELETE: api/delivery/{id}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDelivery(int id)
         {

@@ -16,6 +16,11 @@ public class FavoritesController : ControllerBase
         _favoritesService = favoritesService;
     }
 
+    /// <summary>
+    /// // GET: api/userId/{id}
+    /// </summary> 
+    /// <param name="userId"></param>
+    /// <returns></returns>
     [HttpGet("{userId}")]
     public async Task<ActionResult<IEnumerable<Favorite>>> GetUserFavorites(int userId)
     {
@@ -23,6 +28,11 @@ public class FavoritesController : ControllerBase
         return Ok(favorites);
     }
 
+    /// <summary>
+    /// // POST: api/favorite
+    /// </summary>
+    /// <param name="favorite"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<ActionResult> AddFavorite(Favorite favorite)
     {
@@ -31,7 +41,14 @@ public class FavoritesController : ControllerBase
         return Ok(new { message = "Favorite created successfully." });
     }
 
-   
+
+    /// <summary>
+    /// // PUT: api/favorite/{id}
+    /// </summary>
+    /// <param name="favoriteId"></param>
+    /// <param name="updatedFavorite"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
     [HttpPut("{favoriteId}")]
     public async Task<ActionResult<string>> UpdateFavorite(int favoriteId, [FromBody] Favorite updatedFavorite, [FromQuery] int userId)
     {
@@ -59,6 +76,12 @@ public class FavoritesController : ControllerBase
         return Ok("Favorite updated successfully.");
     }
 
+    /// <summary>
+    /// // DELETE: api/delivery/{id}
+    /// </summary>
+    /// <param name="favoriteId"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
     [HttpDelete("{favoriteId}")]
     public async Task<ActionResult<string>> RemoveFavorite(int favoriteId, [FromQuery] int userId)
     {
@@ -67,6 +90,12 @@ public class FavoritesController : ControllerBase
         return Ok("Favorite deleted successfully.");
     }
 
+    /// <summary>
+    /// // GET: api/productId/{id}
+    /// </summary>
+    /// <param name="productId"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
     [HttpGet("check/{productId}")]
     public async Task<ActionResult<string>> IsProductInFavorites(int productId, [FromQuery] int userId)
     {

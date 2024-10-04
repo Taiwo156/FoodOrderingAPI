@@ -8,10 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\**" />
-    <Content Remove="Controllers\**" />
-    <EmbeddedResource Remove="Controllers\**" />
-    <None Remove="Controllers\**" />
+    <Compile Remove="MergedAPI\**" />
+    <Content Remove="MergedAPI\**" />
+    <EmbeddedResource Remove="MergedAPI\**" />
+    <None Remove="MergedAPI\**" />
   </ItemGroup>
 
   <ItemGroup>

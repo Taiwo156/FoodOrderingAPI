@@ -76,6 +76,8 @@ namespace APItask
                         Url = new Uri("https://karthiktechblog.com/copyright"),
                     }
                 });
+
+                //options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First()); //This line
             });
         }
 
@@ -105,7 +107,7 @@ namespace APItask
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Learn Smart Coding - EssentialProducts API V1");
+                c.SwaggerEndpoint("./v1/swagger.json", "Learn Smart Coding - EssentialProducts API V1");
             });
         }
     }
