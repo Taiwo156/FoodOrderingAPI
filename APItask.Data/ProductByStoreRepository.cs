@@ -1,4 +1,4 @@
-﻿using ASPtask.Core;
+﻿using APItask.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -19,7 +19,7 @@ namespace APItask.Data
             return await _context.Set<ProductByStore>().ToListAsync();
         }
 
-        public async Task<ProductByStore> GetProductById(int productId, int storeId)
+        public async Task<ProductByStore?> GetProductById(int productId, int storeId)
         {
             return await _context.Set<ProductByStore>()
                 .FirstOrDefaultAsync(p => p.ProductId == productId && p.StoreId == storeId);

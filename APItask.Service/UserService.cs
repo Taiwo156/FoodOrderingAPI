@@ -1,135 +1,108 @@
-﻿using APItask.Data;
-using ASPtask.Core;
+﻿using APItask.Core.DTOs.Responses;
+using APItask.Core.Models;
+using APItask.Data;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using System.Net;
+using System.Net.Mail;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace APItask.Service
 {
     public class UserService : IUserService
     {
-        
+        private readonly IUserRepository _userRepository;
+        private readonly IConfiguration _config;
 
-        EssentialProductsDbContext _DBContext;
-
-        public UserService(EssentialProductsDbContext essentialProductsDbContext)
+        public UserService(IUserRepository userRepository, IConfiguration config)
         {
-            _DBContext = essentialProductsDbContext;
-            //_users.Add(new User { Id = 1, Username = "testuser", Password = "password", Email = "testuser@example.com" });
+            _userRepository = userRepository;
+            _config = config;
         }
 
-        public async Task<ASPtask.Core.User> AuthenticateAsync(string username, string password)
+        public async Task<Users?> GetUserByIdAsync(int id)
         {
-          
-            return await _DBContext.User.Where(u => u.Username == username && u.Password == password).FirstOrDefaultAsync();
+            return await _userRepository.GetByIdAsync(id);
         }
 
-        public async Task<(bool Success, string ErrorMessage)> AddUserAsync(List<User> users)
+        public async Task<Users?> AuthenticateAsync(string username, string password)
         {
+            var user = await _userRepository.GetByUsernameAsync(username);
+            if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+                return null;
 
+            return user;
+        }
 
-            string errorMessage = null;
-            bool status = false;
-            try
+        public async Task<List<Users>> GetAllUsersAsync()
+        {
+            return await _userRepository.GetAllAsync();
+        }
+
+        public async Task<Users?> AddUserAsync(UserRegistrationDto registration)
+        {
+            if (await _userRepository.UsernameExistsAsync(registration.Username))
+                return null;
+
+            var user = new Users
             {
-                foreach (User user in users)
-                {
-                    user.Id = 0;
+                Username = registration.Username,
+                Email = registration.Email,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(registration.Password)
+            };
 
-                    _DBContext.Add(user);
-                }
-                await _DBContext.SaveChangesAsync();
-
-                status = true;
-            }
-            catch (Exception ex)
-            {
-                status = false;
-                errorMessage = ex.Message;
-            }
-
-            return (status, errorMessage);
+            return await _userRepository.AddAsync(user);
         }
 
-
-
-        //public async Task<User> GetUserByIdAsync(int id)
-        //{
-        //    return await Task.Run(() => _users.FirstOrDefault(u => u.Id == id));
-        //}
-
-        public async Task<(bool Success, string ErrorMessage)> DeleteUserAsync(int id)
+        public async Task<Users?> UpdateUserAsync(int id, UserUpdateDto updateDto)
         {
-            var user = await _DBContext.User.Where(u => u.Id == id).FirstOrDefaultAsync();
+            var user = await _userRepository.GetByIdAsync(id);
+            if (user == null) return null;
 
-            if (user == null)
-                return (false, "User not found");
+            user.Username = updateDto.Username;
+            user.Email = updateDto.Email;
 
-            _DBContext.Remove(user);
-            _DBContext.SaveChanges();
+            if (!string.IsNullOrEmpty(updateDto.NewPassword))
+            {
+                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(updateDto.NewPassword);
+            }
+
+            return await _userRepository.UpdateAsync(user);
+        }
+
+        public async Task<(bool Success, string? ErrorMessage)> DeleteUserAsync(int id)
+        {
+            var result = await _userRepository.DeleteAsync(id);
+            return result ? (true, null) : (false, "User not found");
+        }
+
+        public async Task<(bool Success, string? ErrorMessage)> RequestPasswordResetAsync(string email)
+        {
+            var user = await _userRepository.GetByEmailAsync(email);
+            if (user == null) return (false, "Email not found");
+
+            var token = Guid.NewGuid().ToString();
+            var expiry = DateTime.UtcNow.AddHours(1);
+
+            await _userRepository.UpdateResetTokenAsync(user.Id, token, expiry);
+            return (true, token);
+        }
+
+        public async Task<(bool Success, string? ErrorMessage)> ResetPasswordAsync(string token, string newPassword)
+        {
+            var user = await _userRepository.GetByResetTokenAsync(token);
+            if (user == null) return (false, "Invalid token");
+
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
+            user.ResetToken = null;
+            user.ResetTokenExpiry = null;
+
+            await _userRepository.UpdateAsync(user);
             return (true, null);
         }
-
-        // Implement the new method
-        public async Task<List<User>> GetAllUsersAsync()
-        {
-            try
-            {
-                return _DBContext.User.ToList();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An error occured while retrieving users: {ex.Message}");
-            }
-            return null;
-        }
-
-
-        //public override bool Equals(object? obj)
-        //{
-        //    return obj is UserService service &&
-        //           EqualityComparer<List<User>>.Default.Equals(_users, service._users) &&
-        //           EqualityComparer<EssentialProductsDbContext>.Default.Equals(_DBContext, service._DBContext);
-        //}
-
-        //Task<User> IUserService.AuthenticateAsync(string username, string password)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-
-
-
-        public async Task<User?> GetUserByIdAsync(int id)
-        {
-            try
-            {
-                return await _DBContext.User.Where(u => u.Id == id).FirstOrDefaultAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An error occured while retrieving user: {ex.Message}");
-            }
-            // Return null if an exception occurs or if no user is found
-
-            return null;
-        }
-        public async Task<User> UpdateUserAsync(User user)
-        {
-            var existingUser = await _DBContext.User.FindAsync(user.Id);
-            if (existingUser == null) return null;
-
-            existingUser.Username = user.Username;
-            existingUser.Password = user.Password;
-            existingUser.Email = user.Email;
-
-            await _DBContext.SaveChangesAsync();
-            return existingUser;
-        }
-
-
-
     }
-
 }

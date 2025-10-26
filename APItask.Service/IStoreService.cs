@@ -1,18 +1,19 @@
-﻿using ASPtask.Core;
-using System;
+﻿using APItask.Core.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace APItask.Service
 {
     public interface IStoreService
     {
-        Task<IEnumerable<Store>> GetAllStoresAsync();
-        Task<Store> GetStoreByIdAsync(int storeId);
+        Task<IReadOnlyCollection<Store>> GetAllStoresAsync();
+
+        Task<Store?> GetStoreByIdAsync(int storeId);
+
         Task<Store> AddStoreAsync(Store store);
+
         Task<bool> UpdateStoreAsync(Store store);
+
         Task<bool> RemoveStoreAsync(int storeId);
     }
 }

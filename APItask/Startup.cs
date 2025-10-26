@@ -2,6 +2,8 @@
 using APItask.Service;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using APItask.Services;
+using APItask.Core.Models;
 
 namespace APItask
 {
@@ -24,6 +26,7 @@ namespace APItask
 
             // Register UserService and IUserService
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             // Register FavoritesService and IFavoritesService
             services.AddScoped<IFavoritesService, FavoritesService>();
@@ -44,6 +47,19 @@ namespace APItask
             //Delivery
             services.AddScoped<IDeliveryService, DeliveryService>();
             services.AddScoped<IDeliveryRepository, DeliveryRepository>();
+
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ICategoryService, CategoryService>();
+
+            services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
+
+
+            //chatbot
+            services.AddHttpClient();
+            services.AddSingleton<IChatbotService, ChatbotService>();
+            services.Configure<MistralAISettings>(Configuration.GetSection("MistralAI"));
+
 
             services.AddControllers();
 

@@ -5,11 +5,11 @@ VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APItask", "APItask\APItask.csproj", "{B13B9B4C-222F-4F60-A5A8-861AD8433485}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASPtask.Core", "ASPtask.Core\ASPtask.Core.csproj", "{232EC526-DBC8-4F74-B507-769DEE6D9543}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APItask.Core", "APItask.Core\APItask.Core.csproj", "{232EC526-DBC8-4F74-B507-769DEE6D9543}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APItask.Data", "APItask.Data\APItask.Data.csproj", "{BC0C28DE-3EDA-4648-9CEC-443D1754EDC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APItask.Data", "APItask.Data\APItask.Data.csproj", "{BC0C28DE-3EDA-4648-9CEC-443D1754EDC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APItask.Service", "APItask.Service\APItask.Service.csproj", "{409A12D3-359B-442E-B7AF-8118A81F78AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APItask.Service", "APItask.Service\APItask.Service.csproj", "{409A12D3-359B-442E-B7AF-8118A81F78AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

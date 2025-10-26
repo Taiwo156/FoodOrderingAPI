@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using APItask.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace APItask.Data
@@ -13,14 +14,14 @@ namespace APItask.Data
             _context = context;
         }
 
-        public async Task<Product> GetProductAsync(int productId)
+        public async Task<Product?> GetProductAsync(int productId)
         {
             return await _context.Product.FindAsync(productId);
         }
 
-        public async Task<Product> UpdateProductAsync(Product product)
+        public async Task<Product?> UpdateProductAsync(Product product)
         {
-            var existingProduct = await _context.Product.FindAsync(product.Id);
+            var existingProduct = await _context.Product.FindAsync(product.ProductId);
             if (existingProduct == null)
             {
                 return null; // or throw an exception
@@ -62,7 +63,7 @@ namespace APItask.Data
             return true;
         }
 
-        public Product GetProduct(int productId)
+        public Product? GetProduct(int productId)
         {
             return _context.Product.Find(productId);
         }

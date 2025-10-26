@@ -1,4 +1,6 @@
-﻿using ASPtask.Core;
+﻿using APItask.Core.DTOs.Requests;
+using APItask.Core.DTOs.Responses;
+using APItask.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +11,10 @@ namespace APItask.Service
 {
     public interface IOrderService
     {
-        Task<IEnumerable<Order>> GetAllOrdersAsync();
-        Task<Order> GetOrderByIdAsync(int orderId);
-        Task<Order> CreateOrderAsync(Order newOrder);
-        Task UpdateOrderAsync(Order updatedOrder);
+        Task<IEnumerable<OrderResponse>> GetAllOrdersAsync();
+        Task<OrderResponse?> GetOrderByIdAsync(int orderId);
+        Task<OrderResponse> CreateOrderAsync(CreateOrderRequest request);
+        Task UpdateOrderAsync(Order updatedOrder); 
         Task DeleteOrderAsync(int orderId);
     }
 }

@@ -1,19 +1,16 @@
-﻿using ASPtask.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using APItask.Core.Models;
 
-namespace APItask.Data
+public interface IUserRepository
 {
-    public interface IUserRepository
-    {
-        Task<User> GetUserByIdAsync(int id);
-        Task<User> AuthenticateAsync(string username, string password);
-        Task<List<User>> GetAllUsersAsync();
-        Task<(bool Success, string ErrorMessage)> AddUserAsync(List<User> users);
-        Task DeleteUserAsync(int id);
-        Task<bool> UserExistsAsync(string username, string email);
-    }
+    Task<Users?> GetByIdAsync(int id);
+    Task<Users?> GetByUsernameAsync(string username);
+    Task<Users?> GetByEmailAsync(string email);
+    Task<List<Users>> GetAllAsync();
+    Task<Users> AddAsync(Users user);
+    Task<Users> UpdateAsync(Users user);
+    Task<bool> DeleteAsync(int id);
+    Task<bool> UsernameExistsAsync(string username);
+    Task<bool> EmailExistsAsync(string email);
+    Task<Users?> GetByResetTokenAsync(string token);
+    Task UpdateResetTokenAsync(int userId, string token, DateTime expiry);
 }

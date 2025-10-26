@@ -1,4 +1,4 @@
-﻿using ASPtask.Core;
+﻿using APItask.Core.Models;
 using APItask.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -21,7 +21,7 @@ namespace APItask.Service
             return await _context.Favorites.Where(f => f.UserId == userId).ToListAsync();
         }
 
-        public async Task<Favorite> GetFavoriteByIdAsync(int favoriteId)
+        public async Task<Favorite?> GetFavoriteByIdAsync(int favoriteId)
         {
             return await _context.Favorites.FindAsync(favoriteId);
         }

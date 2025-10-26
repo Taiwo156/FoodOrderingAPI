@@ -1,4 +1,4 @@
-﻿using ASPtask.Core;
+﻿using APItask.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -22,7 +22,7 @@ namespace APItask.Data
             return await _context.Stores.ToListAsync();
         }
 
-        public async Task<Store> GetStoreByIdAsync(int storeId)
+        public async Task<Store?> GetStoreByIdAsync(int storeId)
         {
             return await _context.Stores.FindAsync(storeId);
         }

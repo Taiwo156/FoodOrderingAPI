@@ -1,4 +1,4 @@
-﻿using ASPtask.Core;
+﻿using APItask.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +9,8 @@ namespace APItask.Data
 {
     public interface IDeliveryRepository
     {
-        Task<Delivery> GetDeliveryByIdAsync(int deliveryID);
-        Task<Delivery> GetDeliveryByOrderIdAsync(int orderID);
+        Task<Delivery?> GetDeliveryByIdAsync(int deliveryID);
+        Task<Delivery?> GetDeliveryByOrderIdAsync(int orderID);
         Task<Delivery> CreateDeliveryAsync(Delivery delivery);
         Task<Delivery> UpdateDeliveryAsync(Delivery delivery);
         Task<bool> DeleteDeliveryAsync(int deliveryID);

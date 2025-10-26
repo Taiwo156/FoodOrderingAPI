@@ -1,7 +1,7 @@
 ﻿using APItask.Data;
-using ASPtask.Core;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using APItask.Core.Models;
 
 namespace APItask.Service
 {
@@ -19,7 +19,7 @@ namespace APItask.Service
             return await _repository.GetProductsInStore();
         }
 
-        public async Task<ProductByStore> GetProductById(int productId, int storeId)
+        public async Task<ProductByStore?> GetProductById(int productId, int storeId)
         {
             return await _repository.GetProductById(productId, storeId);
         }
@@ -38,6 +38,5 @@ namespace APItask.Service
         {
             await _repository.DeleteProductFromStore(productId, storeId);
         }
-        
     }
 }

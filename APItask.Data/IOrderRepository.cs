@@ -1,4 +1,4 @@
-﻿using ASPtask.Core;
+﻿using APItask.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +9,11 @@ namespace APItask.Data
 {
     public interface IOrderRepository
     {
-        Task<IEnumerable<Order>> GetAllOrdersAsync();
-        Task<Order> GetOrderByIdAsync(int orderId);
+        Task<IReadOnlyCollection<Order>> GetAllOrdersAsync();
+        Task<Order?> GetOrderByIdAsync(int orderId);
         Task<Order> CreateOrderAsync(Order newOrder);
         Task UpdateOrderAsync(Order updatedOrder);
-        Task DeleteOrderAsync(int orderId);
+        Task<bool> DeleteOrderAsync(int orderId);
     }
 
 }

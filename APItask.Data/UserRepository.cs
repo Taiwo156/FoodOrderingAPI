@@ -1,10 +1,7 @@
-﻿using ASPtask.Core;
+﻿using APItask.Core.Models;
+using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 namespace APItask.Data
 {
@@ -17,68 +14,75 @@ namespace APItask.Data
             _context = context;
         }
 
-        public async Task<User> GetUserByIdAsync(int id)
+        public async Task<Users?> GetByIdAsync(int id)
         {
-            return await _context.User.FirstOrDefaultAsync(u => u.Id == id)!;
+            return await _context.Users.FindAsync(id);
         }
 
-
-        public async Task<User> AuthenticateAsync(string username, string password)
+        public async Task<Users?> GetByUsernameAsync(string username)
         {
-            return await _context.User.FirstOrDefaultAsync(u => u.Username == username && u.Password == password); // Changed Users to User
+            return await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
         }
 
-        public async Task<List<User>> GetAllUsersAsync()
+        public async Task<Users?> GetByEmailAsync(string email)
         {
-            return await _context.User.ToListAsync(); 
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        //public async Task AddUserAsync(User user)
-        //{
-        //    _context.User.Add(user); 
-        //    await _context.SaveChangesAsync();
-        //}
-        public async Task<(bool Success, string ErrorMessage)> AddUserAsync(List<User> users)
+        public async Task<List<Users>> GetAllAsync()
         {
-            try
-            {
-                foreach (var user in users)
-                {
-                    var exists = await _context.User.AnyAsync(u => u.Username == user.Username || u.Email == user.Email);
-                    if (exists)
-                    {
-                        return (false, $"User with username {user.Username} or email {user.Email} already exists.");
-                    }
-
-                    user.Id = 0;  // Assuming ID is auto-generated
-                    _context.User.Add(user);  // Add each user
-                }
-
-                await _context.SaveChangesAsync();  // Save all changes
-                return (true, null);  // Return success
-            }
-            catch (Exception ex)
-            {
-                // Log the exception as needed
-                return (false, $"An error occurred: {ex.Message}");
-            }
+            return await _context.Users.ToListAsync();
         }
 
-
-
-        public async Task DeleteUserAsync(int id)
+        public async Task<Users> AddAsync(Users user)
         {
-            var user = await _context.User.FirstOrDefaultAsync(u => u.Id == id); 
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+            return user;
+        }
+
+        public async Task<Users> UpdateAsync(Users user)
+        {
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+            return user;
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null) return false;
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> UsernameExistsAsync(string username)
+        {
+            return await _context.Users.AnyAsync(u => u.Username == username);
+        }
+
+        public async Task<bool> EmailExistsAsync(string email)
+        {
+            return await _context.Users.AnyAsync(u => u.Email == email);
+        }
+
+        public async Task<Users?> GetByResetTokenAsync(string token)
+        {
+            return await _context.Users
+                .FirstOrDefaultAsync(u => u.ResetToken == token && u.ResetTokenExpiry > DateTime.UtcNow);
+        }
+
+        public async Task UpdateResetTokenAsync(int userId, string token, DateTime expiry)
+        {
+            var user = await _context.Users.FindAsync(userId);
             if (user != null)
             {
-                _context.User.Remove(user); 
+                user.ResetToken = token;
+                user.ResetTokenExpiry = expiry;
                 await _context.SaveChangesAsync();
             }
-        }
-
-        public async Task<bool> UserExistsAsync(string username, string email)
-        {
-            return await _context.User.AnyAsync(u => u.Username == username || u.Email == email); 
         }
     }
 }
