@@ -76,20 +76,20 @@ namespace APItask
             {
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Learn Smart Coding - EssentialProducts API",
+                    Title = "Food Ordering API",
                     Version = "V1",
-                    Description = "This API is designed to show products that are essential for customers on a day-to-day basis.",
+                    Description = "Production-ready food ordering system with multi-payment integration and AI chatbot",
                     TermsOfService = new Uri("https://karthiktechblog.com/copyright"),
                     Contact = new OpenApiContact
                     {
-                        Name = "Karthik",
-                        Email = "learnsmartcoding@gmail.com",
-                        Url = new Uri("http://www.karthiktechblog.com")
+                        Name = "Taiwo Oluboyede",
+                        Email = "oluboyedetaiwo156@gmail.com",
+                        Url = new Uri("https://taiwo156.github.io/")
                     },
                     License = new OpenApiLicense
                     {
-                        Name = "Use under LICX",
-                        Url = new Uri("https://karthiktechblog.com/copyright"),
+                        Name = "MIT License",
+                        Url = new Uri("https://opensource.org/licenses/MIT"),
                     }
                 });
             });

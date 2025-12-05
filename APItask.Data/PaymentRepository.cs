@@ -17,8 +17,9 @@ namespace APItask.Data
 
         public async Task<string> GeneratePaymentReference()
         {
-            // Simple reference generation - you can make this more sophisticated
-            return $"TEE{DateTime.UtcNow:yyyyMMddHHmmss}";
+            var timestamp = DateTime.UtcNow.ToString("yyyyMMddHmmss");
+            var uniqueId = Guid.NewGuid().ToString("N").Substring(0, 8);
+            return $"TEE{ timestamp}{ uniqueId}";
         }
 
         public async Task SavePaymentAttempt(PaymentAttempt paymentAttempt)

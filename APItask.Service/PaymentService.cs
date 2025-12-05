@@ -13,6 +13,8 @@ namespace APItask.Services
         private readonly ILogger<PaymentService> _logger;
         private readonly IConfiguration _configuration;
         private readonly IPaymentRepository _paymentRepository;
+        private const int PAYMENT_PROCESSING_TIMEOUT_SECONDS = 30;
+        private const int PAYMENT_PENDING_THRESHOLD_SECONDS = 10;
 
         public PaymentService(
             ILogger<PaymentService> logger,
@@ -238,8 +240,7 @@ namespace APItask.Services
                 };
             }
 
-            // --- MOCK LOGIC FOR SCHOOL PROJECT ---
-            // Simulate different real-world scenarios based on the payment's age or status
+            
             var timeSinceCreation = DateTime.UtcNow - payment.CreatedAt;
 
             if (payment.Status == "completed")
@@ -252,9 +253,8 @@ namespace APItask.Services
                     Reference = reference
                 };
             }
-            else if (timeSinceCreation.TotalSeconds > 30)
+            else if (timeSinceCreation.TotalSeconds > PAYMENT_PROCESSING_TIMEOUT_SECONDS)
             {
-                // If the payment was created more than 30 seconds ago, simulate a successful payment
                 await _paymentRepository.UpdatePaymentStatus(reference, "completed");
                 return new PaymentResult
                 {
@@ -263,9 +263,8 @@ namespace APItask.Services
                     Reference = reference
                 };
             }
-            else if (timeSinceCreation.TotalSeconds > 10)
+            else if (timeSinceCreation.TotalSeconds > PA)
             {
-                // If it's between 10 and 30 seconds old, simulate it being pending
                 return new PaymentResult
                 {
                     Success = false,
