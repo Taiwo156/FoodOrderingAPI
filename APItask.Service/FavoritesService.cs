@@ -13,18 +13,18 @@ namespace APItask.Service
             _favoritesRepository = favoritesRepository;
         }
 
-        public async Task<IEnumerable<Favorite>> GetUserFavoritesAsync(string userId)
+        public async Task<IEnumerable<Favorite>> GetUserFavoritesAsync(int userId)
         {
             return await _favoritesRepository.GetUserFavoritesAsync(userId);
         }
 
-        public async Task<Favorite> AddFavoriteAsync(int productId, string userId)
+        public async Task<Favorite> AddFavoriteAsync(Favorite favorite)
         {
-            var favorite = new Favorite { ProductId = productId, UserId = userId };
+            //var favorite = new Favorite { ProductId = productId, UserId = userId };
             return await _favoritesRepository.AddFavoriteAsync(favorite);
         }
 
-        public async Task<bool> RemoveFavoriteAsync(int favoriteId, string userId)
+        public async Task<bool> RemoveFavoriteAsync(int favoriteId, int userId)
         {
             var favorite = await _favoritesRepository.GetFavoriteByIdAsync(favoriteId);
             if (favorite == null || favorite.UserId != userId) return false;
@@ -32,7 +32,7 @@ namespace APItask.Service
             return await _favoritesRepository.RemoveFavoriteAsync(favoriteId);
         }
 
-        public async Task<bool> IsProductInFavoritesAsync(int productId, string userId)
+        public async Task<bool> IsProductInFavoritesAsync(int productId, int userId)
         {
             return await _favoritesRepository.IsProductInFavoritesAsync(productId, userId);
         }

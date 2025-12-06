@@ -18,13 +18,17 @@ namespace APItask.Data
         {
             return await _context.Product.FindAsync(productId);
         }
+        public async Task<Product> GetUpcAsync(string upc)
+        {
+            return await _context.Product.FirstOrDefaultAsync(p => p.UPC == upc);
+        }
 
         public async Task<Product?> UpdateProductAsync(Product product)
         {
             var existingProduct = await _context.Product.FindAsync(product.ProductId);
             if (existingProduct == null)
             {
-                return null; // or throw an exception
+                return null; 
             }
 
             existingProduct.Name = product.Name;

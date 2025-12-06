@@ -117,7 +117,11 @@ app.MapControllers();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
+<<<<<<< HEAD
     c.SwaggerEndpoint("/swagger/v1/swagger.json", " EssentialProducts API V1");
+=======
+    c.SwaggerEndpoint("./v1/swagger.json", "Learn Smart Coding - EssentialProducts API V1");
+>>>>>>> 6c79d9140c502456a00bc0950ae536f0f7d2003f
 });
 
 app.Run();

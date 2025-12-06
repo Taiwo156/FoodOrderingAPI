@@ -2,7 +2,11 @@
 using APItask.Service;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+<<<<<<< HEAD
 using APItask.Core.Models;
+=======
+using APItask;
+>>>>>>> 6c79d9140c502456a00bc0950ae536f0f7d2003f
 
 [Route("api/[controller]")]
 [ApiController]
@@ -15,22 +19,41 @@ public class FavoritesController : ControllerBase
         _favoritesService = favoritesService;
     }
 
+    /// <summary>
+    /// // GET: api/userId/{id}
+    /// </summary> 
+    /// <param name="userId"></param>
+    /// <returns></returns>
     [HttpGet("{userId}")]
-    public async Task<ActionResult<IEnumerable<Favorite>>> GetUserFavorites(string userId)
+    public async Task<ActionResult<IEnumerable<Favorite>>> GetUserFavorites(int userId)
     {
         var favorites = await _favoritesService.GetUserFavoritesAsync(userId);
         return Ok(favorites);
     }
 
+    /// <summary>
+    /// // POST: api/favorite
+    /// </summary>
+    /// <param name="favorite"></param>
+    /// <returns></returns>
     [HttpPost]
-    public async Task<ActionResult<string>> AddFavorite([FromBody] int productId, [FromQuery] string userId)
+    public async Task<ActionResult> AddFavorite(Favorite favorite)
     {
-        var favorite = await _favoritesService.AddFavoriteAsync(productId, userId);
-        return CreatedAtAction(nameof(GetUserFavorites), new { userId }, $"Favorite added successfully for product ID: {productId}");
+         await _favoritesService.AddFavoriteAsync(favorite);
+        //return CreatedAtAction(nameof(GetUserFavorites), new { userId }, $"Favorite added successfully for product ID: {productId}");
+        return Ok(new { message = "Favorite created successfully." });
     }
 
+
+    /// <summary>
+    /// // PUT: api/favorite/{id}
+    /// </summary>
+    /// <param name="favoriteId"></param>
+    /// <param name="updatedFavorite"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
     [HttpPut("{favoriteId}")]
-    public async Task<ActionResult<string>> UpdateFavorite(int favoriteId, [FromBody] Favorite updatedFavorite, [FromQuery] string userId)
+    public async Task<ActionResult<string>> UpdateFavorite(int favoriteId, [FromBody] Favorite updatedFavorite, [FromQuery] int userId)
     {
         // Check if the favorite belongs to the user
         var existingFavorite = await _favoritesService.GetFavoriteByIdAsync(favoriteId);
@@ -56,16 +79,28 @@ public class FavoritesController : ControllerBase
         return Ok("Favorite updated successfully.");
     }
 
+    /// <summary>
+    /// // DELETE: api/delivery/{id}
+    /// </summary>
+    /// <param name="favoriteId"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
     [HttpDelete("{favoriteId}")]
-    public async Task<ActionResult<string>> RemoveFavorite(int favoriteId, [FromQuery] string userId)
+    public async Task<ActionResult<string>> RemoveFavorite(int favoriteId, [FromQuery] int userId)
     {
         var result = await _favoritesService.RemoveFavoriteAsync(favoriteId, userId);
         if (!result) return NotFound("Favorite not found or not owned by the user.");
         return Ok("Favorite deleted successfully.");
     }
 
+    /// <summary>
+    /// // GET: api/productId/{id}
+    /// </summary>
+    /// <param name="productId"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
     [HttpGet("check/{productId}")]
-    public async Task<ActionResult<string>> IsProductInFavorites(int productId, [FromQuery] string userId)
+    public async Task<ActionResult<string>> IsProductInFavorites(int productId, [FromQuery] int userId)
     {
         var isInFavorites = await _favoritesService.IsProductInFavoritesAsync(productId, userId);
         return Ok(isInFavorites ? "Product is in favorites." : "Product is not in favorites.");

@@ -30,6 +30,7 @@ namespace APItask.Core.Models
         public string? ModifiedBy { get; set; }
 
         public bool IsActive { get; set; }
+        public string? UPC { get; set; }
     }
 
     public class ProductImage

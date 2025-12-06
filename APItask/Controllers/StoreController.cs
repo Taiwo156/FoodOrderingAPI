@@ -5,7 +5,7 @@ using APItask.Core.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace APItask.Controller
+namespace APItask.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -18,7 +18,10 @@ namespace APItask.Controller
             _storeService = storeService;
         }
 
-        // GET: api/store
+        /// <summary>
+        /// // GET: api/store
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Store>>> GetAllStores()
         {
@@ -26,7 +29,11 @@ namespace APItask.Controller
             return Ok(stores);
         }
 
-        // GET: api/store/{storeId}
+        /// <summary>
+        /// // GET: api/store/{storeId}
+        /// </summary>
+        /// <param name="storeId"></param>
+        /// <returns></returns>
         [HttpGet("{storeId:int}")]
         public async Task<ActionResult<Store>> GetStoreById(int storeId)
         {
@@ -38,7 +45,11 @@ namespace APItask.Controller
             return Ok(store);
         }
 
-        // POST: api/store
+        /// <summary>
+        /// // POST: api/store
+        /// </summary>
+        /// <param name="store"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<Store>> AddStore([FromBody] Store store)
         {
@@ -52,7 +63,11 @@ namespace APItask.Controller
 
         }
 
-        // PUT: api/store
+        /// <summary>
+        /// // PUT: api/store
+        /// </summary>
+        /// <param name="store"></param>
+        /// <returns></returns>
         [HttpPut]
         public async Task<ActionResult<string>> UpdateStore([FromBody] Store store)
         {
@@ -69,7 +84,11 @@ namespace APItask.Controller
             return Ok("Store updated successfully.");
         }
 
-        // DELETE: api/store/{storeId}
+        /// <summary>
+        /// // DELETE: api/store/{storeId}
+        /// </summary>
+        /// <param name="storeId"></param>
+        /// <returns></returns>
         [HttpDelete("{storeId:int}")]
         public async Task<ActionResult<string>> RemoveStore(int storeId)
         {

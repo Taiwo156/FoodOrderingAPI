@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using APItask.Core.Models;
 
-namespace APItask.Properties
+namespace APItask.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -16,6 +16,10 @@ namespace APItask.Properties
             _service = service;
         }
 
+        /// <summary>
+        /// ProductByStore API
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetProductsInStore()
         {
@@ -23,6 +27,12 @@ namespace APItask.Properties
             return Ok(products);
         }
 
+        /// <summary>
+        /// // GET: api/productId/{id}/storeId/{id}
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <param name="storeId"></param>
+        /// <returns></returns>
         [HttpGet("{productId}/{storeId}")]
         public async Task<IActionResult> GetProductById(int productId, int storeId)
         {
@@ -30,6 +40,11 @@ namespace APItask.Properties
             return product == null ? NotFound() : Ok(product);
         }
 
+        /// <summary>
+        /// // POST: api/ProductByStore
+        /// </summary>
+        /// <param name="productByStore"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> AddProductToStore([FromBody] ProductByStore productByStore)
         {
@@ -40,6 +55,11 @@ namespace APItask.Properties
             return Ok(new { message = "Product registered successfully in store." });
         }
 
+        /// <summary>
+        /// PUT: api/Products/{id}
+        /// </summary>
+        /// <param name="productByStore"></param>
+        /// <returns></returns>
         [HttpPut]
         public async Task<IActionResult> UpdateProductInStore([FromBody] ProductByStore productByStore)
         {
@@ -50,6 +70,12 @@ namespace APItask.Properties
             return Ok(new { message = "Product updated successfully in store." });
         }
 
+        /// <summary>
+        /// // DELETE: api/ProductsByStore/{id}
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <param name="storeId"></param>
+        /// <returns></returns>
         [HttpDelete("{productId}/{storeId}")]
         public async Task<IActionResult> DeleteProductFromStore(int productId, int storeId)
         {

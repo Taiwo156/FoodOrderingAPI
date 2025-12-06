@@ -33,6 +33,10 @@ namespace APItask.Service
         {
             return _productRepository.GetProductAsync(productId);
         }
+        public Task<Product> GetUpcAsync(string upc)
+        {
+            return productRepository.GetUpcAsync(upc);
+        }
 
         public List<Product> GetProducts(int noOfProducts = 100)
         {

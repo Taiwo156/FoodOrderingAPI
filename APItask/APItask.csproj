@@ -7,7 +7,19 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
   </PropertyGroup>
+<<<<<<< HEAD
     <ItemGroup>
+=======
+
+  <ItemGroup>
+    <Compile Remove="MergedAPI\**" />
+    <Content Remove="MergedAPI\**" />
+    <EmbeddedResource Remove="MergedAPI\**" />
+    <None Remove="MergedAPI\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+>>>>>>> 6c79d9140c502456a00bc0950ae536f0f7d2003f
     <Compile Remove="WeatherForecast.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -9,6 +9,7 @@ namespace APItask.Service
         Product GetProduct(int productId);
         List<Product> GetProducts(int noOfProducts = 100);
         Task<Product> GetProductAsync(int productId);
+        Task<Product> GetUpcAsync(string upc);
         Task<List<Product>> GetProductsAsync(int noOfProducts = 100);
         Task<List<Product>> CreateProduct(List<Product> products);
         Task<Product> UpdateProductAsync(Product product);

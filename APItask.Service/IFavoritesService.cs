@@ -6,10 +6,10 @@ namespace APItask.Service
 {
     public interface IFavoritesService
     {
-        Task<IEnumerable<Favorite>> GetUserFavoritesAsync(string userId);
-        Task<Favorite> AddFavoriteAsync(int productId, string userId);
-        Task<bool> RemoveFavoriteAsync(int favoriteId, string userId);
-        Task<bool> IsProductInFavoritesAsync(int productId, string userId);
+        Task<IEnumerable<Favorite>> GetUserFavoritesAsync(int userId);
+        Task<Favorite> AddFavoriteAsync(Favorite favorite);
+        Task<bool> RemoveFavoriteAsync(int favoriteId, int userId);
+        Task<bool> IsProductInFavoritesAsync(int productId, int userId);
         Task<Favorite> GetFavoriteByIdAsync(int favoriteId); 
         Task<bool> UpdateFavoriteAsync(int favoriteId, Favorite updatedFavorite); 
     }

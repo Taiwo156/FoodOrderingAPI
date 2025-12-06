@@ -37,12 +37,14 @@ namespace APItask.Data
             }
         }
 
+ 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             
             modelBuilder.Entity<ProductByStore>()
-                .HasKey(p => new { p.ProductId, p.StoreId });
+                .HasKey(p => new { p.ProductId, p.StoreId, });
 
+<<<<<<< HEAD
             modelBuilder.Entity<ProductByStore>()
                 .HasOne(pbs => pbs.Product)
                 .WithMany()
@@ -52,6 +54,9 @@ namespace APItask.Data
                 .HasOne(pbs => pbs.Store)
                 .WithMany()
                 .HasForeignKey(pbs => pbs.StoreId);
+=======
+           
+>>>>>>> 6c79d9140c502456a00bc0950ae536f0f7d2003f
 
             modelBuilder.Entity<Favorite>().ToTable("Favorite");
 
