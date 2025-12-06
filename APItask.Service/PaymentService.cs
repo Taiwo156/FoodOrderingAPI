@@ -263,7 +263,7 @@ namespace APItask.Services
                     Reference = reference
                 };
             }
-            else if (timeSinceCreation.TotalSeconds > PA)
+            else if (timeSinceCreation.TotalSeconds > PAYMENT_PENDING_THRESHOLD_SECONDS)
             {
                 return new PaymentResult
                 {
