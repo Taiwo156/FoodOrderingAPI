@@ -35,7 +35,7 @@ namespace APItask.Service
         }
         public Task<Product> GetUpcAsync(string upc)
         {
-            return productRepository.GetUpcAsync(upc);
+            return _productRepository.GetUpcAsync(upc);
         }
 
         public List<Product> GetProducts(int noOfProducts = 100)

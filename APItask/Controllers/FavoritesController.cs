@@ -2,11 +2,8 @@
 using APItask.Service;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-<<<<<<< HEAD
 using APItask.Core.Models;
-=======
 using APItask;
->>>>>>> 6c79d9140c502456a00bc0950ae536f0f7d2003f
 
 [Route("api/[controller]")]
 [ApiController]

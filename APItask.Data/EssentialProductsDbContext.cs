@@ -29,6 +29,8 @@ namespace APItask.Data
         public DbSet<Delivery> Deliveries { get; set; }
         public DbSet<PaymentAttempt> PaymentAttempts { get; set; }
 
+        public DbSet<Payment> Payments { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -44,7 +46,6 @@ namespace APItask.Data
             modelBuilder.Entity<ProductByStore>()
                 .HasKey(p => new { p.ProductId, p.StoreId, });
 
-<<<<<<< HEAD
             modelBuilder.Entity<ProductByStore>()
                 .HasOne(pbs => pbs.Product)
                 .WithMany()
@@ -54,10 +55,7 @@ namespace APItask.Data
                 .HasOne(pbs => pbs.Store)
                 .WithMany()
                 .HasForeignKey(pbs => pbs.StoreId);
-=======
            
->>>>>>> 6c79d9140c502456a00bc0950ae536f0f7d2003f
-
             modelBuilder.Entity<Favorite>().ToTable("Favorite");
 
             modelBuilder.Entity<Order>(entity =>
@@ -103,6 +101,24 @@ namespace APItask.Data
             {
                 p.Property(x => x.Price).HasPrecision(18, 2);
             });
+
+            modelBuilder.Entity<Payment>(entity => {
+                entity.HasKey(e => e.PaymentId);
+                entity.HasIndex(e => e.Reference).IsUnique();
+                entity.Property(e => e.Amount).HasColumnType("decimal(18,2)");
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("GETUTCDATE()");
+                entity.HasIndex(e => e.Email);
+                entity.HasIndex(e => e.Status);
+                entity.HasIndex(e => e.Provider);
+                entity.HasIndex(e => e.CreatedAt);
+            });
+            modelBuilder.Entity<Payment>() 
+                .HasOne<Order>()
+                .WithMany()
+                .HasForeignKey(p => p.OrderId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<PaymentAttempt>(entity =>
             {

@@ -54,6 +54,9 @@ namespace APItask
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IPaymentRepository, PaymentRepository>();
 
+            services.AddScoped<IPaymentProviderService, PaystackService>();
+
+
 
             //chatbot
             services.AddHttpClient();

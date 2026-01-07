@@ -19,7 +19,7 @@ namespace APItask.Data
         {
             var timestamp = DateTime.UtcNow.ToString("yyyyMMddHmmss");
             var uniqueId = Guid.NewGuid().ToString("N").Substring(0, 8);
-            return $"TEE{ timestamp}{ uniqueId}";
+            return $"TEE{timestamp}{uniqueId}";
         }
 
         public async Task SavePaymentAttempt(PaymentAttempt paymentAttempt)
@@ -45,6 +45,63 @@ namespace APItask.Data
         {
             return await _context.PaymentAttempts
                 .FirstOrDefaultAsync(p => p.Reference == reference);
+        }
+
+        public async Task<Payment> SavePaymentAsync(Payment payment)
+        {
+            _context.Payments.Add(payment);
+            await _context.SaveChangesAsync();
+            return payment;
+        }
+
+        public async Task<Payment> GetVerifiedPaymentByReferenceAsync(string reference)
+        {
+            return await _context.Payments.FirstOrDefaultAsync(p => p.Reference == reference);
+        }
+        public async Task<List<Payment>> GetPaymentsAsync(
+            string email = null,
+            string status = null,
+            int pageSize = 50
+            )
+        {
+            //start with all payments
+            var query = _context.Payments.AsQueryable();
+
+            //filter by email if provided
+            if (!string.IsNullOrEmpty(email))
+            {
+                query = query.Where(p => p.Email == email);
+            }
+
+            //filter by status if provided
+            if (!string.IsNullOrEmpty(status))
+            {
+                query = query.Where(p => p.Status == status);
+            }
+
+            //Order by newest first , length limit
+            return await query.OrderByDescending(p => p.CreatedAt).Take(pageSize).ToListAsync();
+        }
+        public async Task<bool> UpdateVerifiedPaymentStatusAsync(string reference, string status)
+        {
+            // find payment
+            var payment = await _context.Payments.FirstOrDefaultAsync(p => p.Reference == reference);
+
+            if (payment == null)
+                return false;
+
+            //update status
+            payment.Status = status;
+            payment.UpdatedAt = DateTime.UtcNow;
+
+            //set VerifiedAt timestamp if payment is suucessful
+            if (status == "success")
+            {
+                payment.VerifiedAt = DateTime.UtcNow;
+            }
+
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

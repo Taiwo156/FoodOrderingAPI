@@ -5,8 +5,14 @@ using Microsoft.OpenApi.Models;
 using System.Configuration;
 using APItask.Services;
 using APItask.Core.Models;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
+// TO LOAD USER SECRETS:
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddUserSecrets<Program>();
+}
 
 // Add services to the container.
 builder.Services.AddDbContext<EssentialProductsDbContext>(options =>
@@ -50,6 +56,10 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 
+builder.Services.AddScoped<IPaymentProviderService, PaystackService>();
+builder.Services.AddScoped<IPaymentProviderService, FlutterwaveService>();
+
+
 builder.WebHost.UseUrls("http://0.0.0.0:5273");
 
 
@@ -75,22 +85,20 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "FoodOrderingAPItask",
-        Version = "V1",
-        Description = "This API is designed for a Food Ordering app.",
-        
+        Title = "FlexiPay - Food Ordering API",
+        Version = "v1",
+        Description = "Multi-provider payment integration API supporting Paystack and Flutterwave with automatic failover",
         Contact = new OpenApiContact
         {
-            Name = "Taiwo",
-            Email = "oluboyedetaiwo@gmail.com",
-            
-        },
-        License = new OpenApiLicense
-        {
-            Name = "Use under LICX",
-           
+            Name = "Taiwo Oluboyede",
+            Email = "oluboyedetaiwo156@gmail.com",
+            Url = new Uri("https://github.com/Taiwo156")
         }
     });
+    // Include XML comments for Swagger documentation
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    options.IncludeXmlComments(xmlPath);
 });
 
 var app = builder.Build();
@@ -117,11 +125,8 @@ app.MapControllers();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-<<<<<<< HEAD
     c.SwaggerEndpoint("/swagger/v1/swagger.json", " EssentialProducts API V1");
-=======
     c.SwaggerEndpoint("./v1/swagger.json", "Learn Smart Coding - EssentialProducts API V1");
->>>>>>> 6c79d9140c502456a00bc0950ae536f0f7d2003f
 });
 
 app.Run();
